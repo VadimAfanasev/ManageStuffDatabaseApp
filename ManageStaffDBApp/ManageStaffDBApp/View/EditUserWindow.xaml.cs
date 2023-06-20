@@ -17,9 +17,9 @@ namespace ManageStaffDBApp.View
     /// <summary>
     /// Логика взаимодействия для AddNewUserWindow.xaml
     /// </summary>
-    public partial class AddNewUserWindow : Window
+    public partial class EditUserWindow : Window
     {
-        public AddNewUserWindow()
+        public EditUserWindow()
         {
             InitializeComponent();
         }

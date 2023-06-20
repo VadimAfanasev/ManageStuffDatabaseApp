@@ -17,9 +17,9 @@ namespace ManageStaffDBApp.View
     /// <summary>
     /// Логика взаимодействия для AddNewPositionWindow.xaml
     /// </summary>
-    public partial class AddNewPositionWindow : Window
+    public partial class EditPositionWindow : Window
     {
-        public AddNewPositionWindow()
+        public EditPositionWindow()
         {
             InitializeComponent();
         }
