@@ -12,7 +12,7 @@ namespace ManageStaffDBApp.Model
     public static class DataWorker
     {
         // Получить все отделы
-        public static List<Department> Departments()
+        public static List<Department> GetAllDepartments()
         {
             using(ApplicationContext db = new ApplicationContext()) 
             {
@@ -20,7 +20,7 @@ namespace ManageStaffDBApp.Model
             }
         }
         // Получить все позиции
-        public static List<Position> Positions()
+        public static List<Position> GetAllPositions()
         {
             using (ApplicationContext db = new ApplicationContext())
             {
@@ -28,7 +28,7 @@ namespace ManageStaffDBApp.Model
             }
         }
         // Получить всех сотрудников
-        public static List<User> Users()
+        public static List<User> GetAllUsers()
         {
             using (ApplicationContext db = new ApplicationContext())
             {
