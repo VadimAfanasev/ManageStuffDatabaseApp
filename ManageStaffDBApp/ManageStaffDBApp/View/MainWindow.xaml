@@ -16,7 +16,7 @@
                 <TabItem.Header>
                     <TextBlock Text="Staff"/>
                 </TabItem.Header>
-                <ListView ItemsSource="{Binding AllUsers}">
+                <ListView x:Name="ViewAllUsers" ItemsSource="{Binding AllUsers}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Name"/>
@@ -33,7 +33,7 @@
                 <TabItem.Header>
                     <TextBlock Text="Positions"/>
                 </TabItem.Header>
-                <ListView ItemsSource="{Binding AllPositions}">
+                <ListView x:Name="ViewAllPositions" ItemsSource="{Binding AllPositions}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Name"/>
@@ -49,11 +49,13 @@
                 <TabItem.Header>
                     <TextBlock Text="Departments"/>
                 </TabItem.Header>
-                <ListView ItemsSource="{Binding AllDepartments}">
+                <ListView x:Name="ViewAllDepartments" ItemsSource="{Binding AllDepartments}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Name"/>
-                            <GridViewColumn Header="Count of positions"/>
+                            <GridViewColumn Header="Name"
+                                            DisplayMemberBinding="{Binding Path=Name}"/>
+                            <GridViewColumn Header="Count of positions"
+                                            DisplayMemberBinding="{Binding Path=Positions.Count}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>

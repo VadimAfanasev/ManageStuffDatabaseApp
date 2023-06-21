@@ -1,12 +1,17 @@
 ﻿using ManageStaffDBApp.Model;
 using ManageStaffDBApp.View;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace ManageStaffDBApp.ViewModel
 {
@@ -45,6 +50,41 @@ namespace ManageStaffDBApp.ViewModel
                 NotifyPropertyChanged("AllUsers:");
             }
         }
+
+        //свойства для отдела
+        public string DepartmentName { get; set; }
+        //свойства для позиций
+
+        //свойства для сотрудников
+
+        #region COMMANDS TO ADD
+        private RelayCommand addNewDepartment;
+        public RelayCommand AddNewDepartment
+        {
+            get
+            {
+                return addNewDepartment ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "";
+                    if (DepartmentName == null || DepartmentName.Replace(" ","").Length == 0)
+                    {
+                        SetRedBlockControll(window, "NameBlock");
+                    }
+                    else
+                    {
+                        resultStr = DataWorker.CreateDepartment(DepartmentName);
+                        UpdateAllDataView();
+                        ShowMessageToUser(resultStr);
+                        SetNullValuesToProperties();
+                        window.Close();
+                    }
+                });
+            }
+        }
+
+
+        #endregion
 
         // Команды открытия окон
         #region COMMAND TO OPEN WINDOW
@@ -128,7 +168,57 @@ namespace ManageStaffDBApp.ViewModel
         }
         #endregion
 
+        private void SetRedBlockControll(Window window, string blockName)
+        {
+            Control block = window.FindName(blockName) as Control;
+            block.BorderBrush = Brushes.Red;
+        }
+        #region UPDATE VIEWS
+        private void SetNullValuesToProperties()
+        {
+            //для пользователя
+            //для позиции
+            //для отдела
+            DepartmentName = null;
+        }
+        private void UpdateAllDataView()
+        {
+            UpdateAllDepartmentsView();
+            UpdateAllPositionsView();
+            UpdateAllUsersView();
+        }
+        private void UpdateAllDepartmentsView()
+        {
+            AllDepartments = DataWorker.GetAllDepartments();
+            MainWindow.AllDepartmentsView.ItemsSource = null;
+            MainWindow.AllDepartmentsView.Items.Clear();
+            MainWindow.AllDepartmentsView.ItemsSource = AllDepartments;
+            MainWindow.AllDepartmentsView.Items.Refresh();
+        }
+        private void UpdateAllPositionsView()
+        {
+            AllPositions = DataWorker.GetAllPositions();
+            MainWindow.AllPositionsView.ItemsSource = null;
+            MainWindow.AllPositionsView.Items.Clear();
+            MainWindow.AllPositionsView.ItemsSource = AllPositions;
+            MainWindow.AllPositionsView.Items.Refresh();
+        }
+        private void UpdateAllUsersView()
+        {
+            AllUsers = DataWorker.GetAllUsers();
+            MainWindow.AllUsersView.ItemsSource = null;
+            MainWindow.AllUsersView.Items.Clear();
+            MainWindow.AllUsersView.ItemsSource = AllUsers;
+            MainWindow.AllUsersView.Items.Refresh();
+        }
+        #endregion
+        private void ShowMessageToUser(string message)
+        {
+            MessageView messageView = new MessageView(message);
+            SetCenterPositionAndOpen(messageView);
+        }
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void NotifyPropertyChanged(String propertyName)
         {
             if (PropertyChanged != null)
