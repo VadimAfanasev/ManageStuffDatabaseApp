@@ -65,6 +65,12 @@ namespace ManageStaffDBApp.ViewModel
         public string UserPhone { get; set; }
         public Position UserPosition { get; set; }
 
+        //свойства для выделенных элементов
+        public TabItem SelectedTabItem { get; set; }
+        public User SelectedUser { get; set; }
+        public Position SelectedPosition { get; set; }
+        public Department SelectedDepartment { get; set; }
+
 
         #region COMMANDS TO ADD
         private RelayCommand addNewDepartment;
@@ -167,6 +173,38 @@ namespace ManageStaffDBApp.ViewModel
 
         #endregion
 
+        private RelayCommand deleteItem;
+        public RelayCommand DeleteItem
+        {
+            get
+            {
+                return deleteItem ?? new RelayCommand(obj =>
+                {
+                    string resultStr = "Ничего не выбрано";
+                    //если сотрудник
+                    if (SelectedTabItem.Name == "UsersTab" && SelectedUser != null)
+                    {
+                        resultStr = DataWorker.DeleteUser(SelectedUser);
+                        UpdateAllDataView();
+                    }
+                    //если позиция
+                    if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
+                    {
+                        resultStr = DataWorker.DeletePosition(SelectedPosition);
+                        UpdateAllDataView();
+                    }
+                    //если отдел
+                    if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
+                    {
+                        resultStr = DataWorker.DeleteDepartment(SelectedDepartment);
+                        UpdateAllDataView();
+                    }
+                    //обновление
+                    SetNullValuesToProperties();
+                    ShowMessageToUser(resultStr);
+                });
+            }
+        }
         // Команды открытия окон
         #region COMMAND TO OPEN WINDOW
         private RelayCommand openAddNewDepartmentWindow;
