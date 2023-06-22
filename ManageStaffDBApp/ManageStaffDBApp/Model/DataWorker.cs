@@ -191,5 +191,42 @@ namespace ManageStaffDBApp.Model
             }
             return result;
         }
+        //получение позиции по id позиции
+        public static Position GetPositionById(int id)
+        {
+            using(ApplicationContext db = new ApplicationContext())
+
+            {
+                return db.Positions.FirstOrDefault(x => x.Id == id);
+            }
+        }
+        //получение отдела по id отдела
+        public static Department GetDepartmentById(int id)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+
+            {
+                return db.Departments.FirstOrDefault(x => x.Id == id);
+            }
+        }
+        //получение всех пользователей по id позиции
+        public static List<User> GetAllUsersByPositionId(int id)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+
+            {
+                return (from user in GetAllUsers() where user.PositionId == id select user).ToList();
+            }
+        }
+
+        //получение всех позиций по id отдела
+        public static List<Position> GetAllPositionsByDepartmentId(int id)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+
+            {
+                return (from position in GetAllPositions() where position.DepartmentId == id select position).ToList();
+            }
+        }
     }
 }
