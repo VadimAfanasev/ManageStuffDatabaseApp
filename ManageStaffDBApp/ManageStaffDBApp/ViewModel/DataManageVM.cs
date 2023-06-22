@@ -54,8 +54,17 @@ namespace ManageStaffDBApp.ViewModel
         //свойства для отдела
         public string DepartmentName { get; set; }
         //свойства для позиций
+        public string PositionName { get; set; }
+        public decimal PositionSalary { get; set; }
+        public int PositionMaxNumber { get; set; }
+        public Department PositionDepartment { get; set; }
 
         //свойства для сотрудников
+        public string UserName { get; set; }
+        public string UserSurName { get; set; }
+        public string UserPhone { get; set; }
+        public Position UserPosition { get; set; }
+
 
         #region COMMANDS TO ADD
         private RelayCommand addNewDepartment;
@@ -82,7 +91,79 @@ namespace ManageStaffDBApp.ViewModel
                 });
             }
         }
+        private RelayCommand addNewPosition;
+        public RelayCommand AddNewPosition
+        {
+            get
+            {
+                return addNewPosition ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "";
+                    if (PositionName == null || PositionName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(window, "NameBlock");
+                    }
+                    if (PositionSalary == 0)
+                    {
+                        SetRedBlockControll(window, "SalaryBlock");
+                    }
+                    if (PositionMaxNumber == 0)
+                    {
+                        SetRedBlockControll(window, "SalaryBlock");
+                    }
+                    if (PositionDepartment == null)
+                    {
+                        MessageBox.Show("Укажите отдел");
+                    }
+                    else
+                    {
+                        resultStr = DataWorker.CreatePosition(PositionName, PositionSalary, PositionMaxNumber, PositionDepartment);
+                        UpdateAllDataView();
+                        ShowMessageToUser(resultStr);
+                        SetNullValuesToProperties();
+                        window.Close();
+                    }
+                });
+            }
+        }
 
+        private RelayCommand addNewUser;
+        public RelayCommand AddNewUser
+        {
+            get
+            {
+                return addNewUser ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "";
+                    if (UserName == null || UserName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(window, "NameBlock");
+                    }
+                    if (UserSurName == null || UserName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(window, "SurNameBlock");
+                    }
+                    //if (UserPhone == null || UserPhone.Replace(" ", "").Length == 0)
+                    //{
+                    //    SetRedBlockControll(window, "PhoneBlock");
+                    //}
+                    if (UserPosition == null)
+                    {
+                        MessageBox.Show("Укажите позицию");
+                    }
+                    else
+                    {
+                        resultStr = DataWorker.CreateUser(UserName, UserSurName, UserPhone, UserPosition);
+                        UpdateAllDataView();
+                        ShowMessageToUser(resultStr);
+                        SetNullValuesToProperties();
+                        window.Close();
+                    }
+                });
+            }
+        }
 
         #endregion
 
@@ -177,7 +258,15 @@ namespace ManageStaffDBApp.ViewModel
         private void SetNullValuesToProperties()
         {
             //для пользователя
+            UserName = null;
+            UserSurName = null;
+            UserPhone = null;
+            UserPosition = null;
             //для позиции
+            PositionName = null;
+            PositionSalary = 0;
+            PositionMaxNumber = 0;
+            PositionDepartment = null;
             //для отдела
             DepartmentName = null;
         }
