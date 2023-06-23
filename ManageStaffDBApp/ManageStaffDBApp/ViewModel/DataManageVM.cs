@@ -205,6 +205,82 @@ namespace ManageStaffDBApp.ViewModel
                 });
             }
         }
+        #region EDIT COMMANDS
+        private RelayCommand editUser;
+        public RelayCommand EditUser
+        {
+            get
+            {
+                return editUser ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "Не выбран сотрудник";
+                    string noPositionStr = "Не выбрана новая должность";
+                    if (SelectedUser != null)
+                    {
+                        if(UserPosition != null)
+                        {
+                            resultStr = DataWorker.EditUser(SelectedUser, UserName, UserSurName, UserPhone, UserPosition);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(resultStr);
+                            window.Close();
+                        }
+                        else ShowMessageToUser(noPositionStr);
+                    }
+                    else ShowMessageToUser(resultStr);
+                });
+            }
+        }
+        private RelayCommand editPosition;
+        public RelayCommand EditPosition
+        {
+            get
+            {
+                return editPosition ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "Не выбрана позиция";
+                    string noDepartmentStr = "Не выбрана новый отдел";
+                    if (SelectedPosition != null)
+                    {
+                        if (PositionDepartment != null)
+                        {
+                            resultStr = DataWorker.EditPosition(SelectedPosition, PositionName, PositionSalary, PositionMaxNumber, PositionDepartment);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(resultStr);
+                            window.Close();
+                        }
+                        else ShowMessageToUser(noDepartmentStr);
+                    }
+                    else ShowMessageToUser(resultStr);
+                });
+            }
+        }
+        private RelayCommand editDepartment;
+        public RelayCommand EditDepartment
+        {
+            get
+            {
+                return editDepartment ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "Не выбран отдел";
+                    if (SelectedDepartment != null)
+                    {
+                            resultStr = DataWorker.EditDepartment(SelectedDepartment, DepartmentName);
+                            UpdateAllDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(resultStr);
+                            window.Close();
+                    }
+                    else ShowMessageToUser(resultStr);
+                });
+            }
+        }
+        #endregion
+
         // Команды открытия окон
         #region COMMAND TO OPEN WINDOW
         private RelayCommand openAddNewDepartmentWindow;
@@ -243,6 +319,32 @@ namespace ManageStaffDBApp.ViewModel
                 );
             }
         }
+        private RelayCommand openEditItemWnd;
+        public RelayCommand OpenEditItemWnd
+        {
+            get
+            {
+                return openEditItemWnd ?? new RelayCommand(obj =>
+                {
+                    string resultStr = "Ничего не выбрано";
+                    //если сотрудник
+                    if (SelectedTabItem.Name == "UsersTab" && SelectedUser != null)
+                    {
+                        OpenEditUserWindowMethod();
+                    }
+                    //если позиция
+                    if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
+                    {
+                        OpenEditPositionWindowMethod();
+                    }
+                    //если отдел
+                    if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null) 
+                    {
+                        OpenEditDepartmentWindowMethod();
+                    }
+                });
+            }
+        }
         #endregion
         // Методы открытия окон
         #region METHODS TO OPEN WINDOW
@@ -264,7 +366,7 @@ namespace ManageStaffDBApp.ViewModel
         #endregion
         // Окна редактирования
         #region METHODS TO EDIT WINDOW
-        private void OpeEditDepartmentWindowMethod()
+        private void OpenEditDepartmentWindowMethod()
         {
             EditDepartmentWindow editDepartmentWindow = new EditDepartmentWindow();
             SetCenterPositionAndOpen(editDepartmentWindow);

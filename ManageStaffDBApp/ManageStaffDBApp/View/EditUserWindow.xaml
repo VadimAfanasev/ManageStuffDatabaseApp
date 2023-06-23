@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManageStaffDBApp.View"
         mc:Ignorable="d"
-        Title="EditUserWindow" Height="300" Width="300">
+        Title="EditUserWindow" Height="300" Width="300"
+        Name="EditUserWnd">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -17,14 +18,17 @@
                     Width="200">
             
             <TextBlock Text="New name"/>
-            <TextBox Text=""/>
+            <TextBox Text="{Binding UserName}"/>
             <TextBlock Text="New surname"/>
-            <TextBox Text=""/>
+            <TextBox Text="{Binding UserSurName}"/>
             <TextBlock Text="New phone"/>
-            <TextBox Text=""/>
+            <TextBox Text="{Binding UserPhone}"/>
             <TextBlock Text="New position"/>
-            <ComboBox/>
+            <ComboBox ItemsSource="{Binding AllPositions}"
+                      SelectedItem="{Binding UserPosition}"/>
         </StackPanel>
-        <Button Grid.Row="1" Content="Edit Staff"/>
+        <Button Grid.Row="1" Content="Edit Staff"
+                Command="{Binding EditUser}"
+                CommandParameter="{Binding ElementName=EditUserWnd}"/>
     </Grid>
 </Window>
