@@ -1,16 +1,10 @@
 ﻿using ManageStaffDBApp.Model;
 using ManageStaffDBApp.View;
-using Microsoft.EntityFrameworkCore.Update.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace ManageStaffDBApp.ViewModel
@@ -52,24 +46,24 @@ namespace ManageStaffDBApp.ViewModel
         }
 
         //свойства для отдела
-        public string DepartmentName { get; set; }
+        public static string DepartmentName { get; set; }
         //свойства для позиций
-        public string PositionName { get; set; }
-        public decimal PositionSalary { get; set; }
-        public int PositionMaxNumber { get; set; }
-        public Department PositionDepartment { get; set; }
+        public static string PositionName { get; set; }
+        public static decimal PositionSalary { get; set; }
+        public static int PositionMaxNumber { get; set; }
+        public static Department PositionDepartment { get; set; }
 
         //свойства для сотрудников
-        public string UserName { get; set; }
-        public string UserSurName { get; set; }
-        public string UserPhone { get; set; }
-        public Position UserPosition { get; set; }
+        public static string UserName { get; set; }
+        public static string UserSurName { get; set; }
+        public static string UserPhone { get; set; }
+        public static Position UserPosition { get; set; }
 
         //свойства для выделенных элементов
         public TabItem SelectedTabItem { get; set; }
-        public User SelectedUser { get; set; }
-        public Position SelectedPosition { get; set; }
-        public Department SelectedDepartment { get; set; }
+        public static User SelectedUser { get; set; }
+        public static Position SelectedPosition { get; set; }
+        public static Department SelectedDepartment { get; set; }
 
 
         #region COMMANDS TO ADD
@@ -205,6 +199,7 @@ namespace ManageStaffDBApp.ViewModel
                 });
             }
         }
+
         #region EDIT COMMANDS
         private RelayCommand editUser;
         public RelayCommand EditUser
@@ -330,17 +325,17 @@ namespace ManageStaffDBApp.ViewModel
                     //если сотрудник
                     if (SelectedTabItem.Name == "UsersTab" && SelectedUser != null)
                     {
-                        OpenEditUserWindowMethod();
+                        OpenEditUserWindowMethod(SelectedUser);
                     }
                     //если позиция
                     if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
                     {
-                        OpenEditPositionWindowMethod();
+                        OpenEditPositionWindowMethod(SelectedPosition);
                     }
                     //если отдел
                     if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null) 
                     {
-                        OpenEditDepartmentWindowMethod();
+                        OpenEditDepartmentWindowMethod(SelectedDepartment);
                     }
                 });
             }
@@ -366,19 +361,19 @@ namespace ManageStaffDBApp.ViewModel
         #endregion
         // Окна редактирования
         #region METHODS TO EDIT WINDOW
-        private void OpenEditDepartmentWindowMethod()
+        private void OpenEditDepartmentWindowMethod(Department department)
         {
-            EditDepartmentWindow editDepartmentWindow = new EditDepartmentWindow();
+            EditDepartmentWindow editDepartmentWindow = new EditDepartmentWindow(department);
             SetCenterPositionAndOpen(editDepartmentWindow);
         }
-        private void OpenEditPositionWindowMethod()
+        private void OpenEditPositionWindowMethod(Position position)
         {
-            EditPositionWindow editPositionWindow = new EditPositionWindow();
+            EditPositionWindow editPositionWindow = new EditPositionWindow(position);
             SetCenterPositionAndOpen(editPositionWindow);
         }
-        private void OpenEditUserWindowMethod()
+        private void OpenEditUserWindowMethod(User user)
         {
-            EditUserWindow editUserWindow = new EditUserWindow();
+            EditUserWindow editUserWindow = new EditUserWindow(user);
             SetCenterPositionAndOpen(editUserWindow);
         }
         private void SetCenterPositionAndOpen(Window window)
